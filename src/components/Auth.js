@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import {auth} from '../config/firebase'
-import {createUserWithEmailAndPassword} from 'firebase/auth'
+import {auth, googleProvider} from '../config/firebase'
+import {createUserWithEmailAndPassword, signInWithPopup, signOut} from 'firebase/auth'
 
 export const Auth = () => {
 
@@ -11,10 +11,24 @@ export const Auth = () => {
             await createUserWithEmailAndPassword(auth, email, password)
         }catch(err){
             console.log(err)
-        }
-        
-    }
+        }  
+    };
 
+    const signInWithGoogle = async () =>{
+        try{
+            await signInWithPopup(auth, googleProvider)
+        }catch(err){
+            console.log(err)
+        }  
+    };
+
+    const logout = async () =>{
+        try{
+            await signOut(auth)
+        }catch(err){
+            console.log(err)
+        }  
+    };
    return(
     <div>
         <input 
@@ -27,6 +41,8 @@ export const Auth = () => {
             onChange={(e)=>setPassword(e.target.value)}
         />
         <button onClick={signIn}>sign in</button>
+        <button onClick={signInWithGoogle}>Sign in wit Google</button>
+        <button onClick={logout}>Logout</button>
     </div>
     )
 }
